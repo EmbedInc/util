@@ -1,0 +1,16 @@
+util_init.obj
+util_mem_context_del.obj
+util_mem_context_get.obj
+util_mem_context_top.obj
+util_mem_grab.obj
+util_mem_ungrab.obj
+util_stack_alloc.obj
+util_stack_dalloc.obj
+util_stack_last_frame.obj
+util_stack_loc_bak.obj
+util_stack_loc_end.obj
+util_stack_loc_fwd.obj
+util_stack_loc_start.obj
+util_stack_pop.obj
+util_stack_popto.obj
+util_stack_push.obj
