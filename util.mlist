@@ -1,3 +1,4 @@
+util_err.obj
 util_init.obj
 util_mem_context_del.obj
 util_mem_context_get.obj

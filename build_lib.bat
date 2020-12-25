@@ -9,6 +9,7 @@ call build_pasinit
 
 call src_insall %srcdir% %libname%
 
+call src_pas %srcdir% %libname%_err %1
 call src_pas %srcdir% %libname%_init %1
 call src_pas %srcdir% %libname%_mem_context_del %1
 call src_pas %srcdir% %libname%_mem_context_get %1

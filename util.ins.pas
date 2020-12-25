@@ -17,6 +17,10 @@ const
   util_stack_frame_size_mask_k =       {used internally for rounding to size}
     util_stack_frame_size_mult_k - 1;
 
+  util_subsys_k = -4;                  {Embed subsystem ID for UTIL library}
+  util_stat_nomemcont_k = 1;           {unable to create new memory context}
+  util_stat_nomem_k = 2;               {unable to allocate dynamic memory}
+
 type
   util_stack_block_p_t = ^util_stack_block_t;
   util_stack_block_t = record          {stack block, these are chained to form stack}
@@ -69,6 +73,12 @@ procedure util_mem_context_del (       {delete a memory context}
   in out  context_p: util_mem_context_p_t); {context address, returned NIL}
   extern;
 
+function util_mem_context_err (        {check for err getting context, set STAT}
+  in      mem_p: util_mem_context_p_t; {pointer returned by CONTEXT_GET}
+  out     stat: sys_err_t)             {set according to error, if any}
+  :boolean;                            {TRUE for error, FALSE no error}
+  val_param; extern;
+
 procedure util_mem_context_get (       {create a subordinate memory context}
   in out  parent: util_mem_context_t;  {parent context to create new context under}
   out     context_p: util_mem_context_p_t); {pointer to new memory context}
@@ -91,6 +101,13 @@ procedure util_mem_grab_align (        {allocate memory under a memory context}
   in out  context: util_mem_context_t; {context under which to allocate memory}
   in      ind: boolean;                {TRUE if need to individually deallocate mem}
   out     adr: univ_ptr);              {start adr of new region}
+  val_param; extern;
+
+function util_mem_grab_err (           {check for error allocating dynamic memory}
+  in      dyn_p: univ_ptr;             {pointer to new mem from alloc routine}
+  in      size: sys_int_adr_t;         {size of mem attempted to allocate}
+  out     stat: sys_err_t)             {set according to error, if any}
+  :boolean;                            {TRUE for error, FALSE no error}
   val_param; extern;
 
 procedure util_mem_ungrab (            {deallocate memory grabbed with UTIL_MEM_GRAB}
