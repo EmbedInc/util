@@ -79,6 +79,10 @@ function util_mem_context_err (        {check for err getting context, set STAT}
   :boolean;                            {TRUE for error, FALSE no error}
   val_param; extern;
 
+procedure util_mem_context_err_bomb (  {bomb program on not got mem context}
+  in      mem_p: util_mem_context_p_t); {pointer returned by CONTEXT_GET}
+  val_param; extern;
+
 procedure util_mem_context_get (       {create a subordinate memory context}
   in out  parent: util_mem_context_t;  {parent context to create new context under}
   out     context_p: util_mem_context_p_t); {pointer to new memory context}
@@ -108,6 +112,11 @@ function util_mem_grab_err (           {check for error allocating dynamic memor
   in      size: sys_int_adr_t;         {size of mem attempted to allocate}
   out     stat: sys_err_t)             {set according to error, if any}
   :boolean;                            {TRUE for error, FALSE no error}
+  val_param; extern;
+
+procedure util_mem_grab_err_bomb (     {bomb program on not got dynamic memory}
+  in      dyn_p: univ_ptr;             {pointer to new mem from alloc routine}
+  in      size: sys_int_adr_t);        {size of mem attempted to allocate}
   val_param; extern;
 
 procedure util_mem_ungrab (            {deallocate memory grabbed with UTIL_MEM_GRAB}

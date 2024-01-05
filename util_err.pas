@@ -2,7 +2,9 @@
 }
 module util_err;
 define util_mem_context_err;
+define util_mem_context_err_bomb;
 define util_mem_grab_err;
+define util_mem_grab_err_bomb;
 %include 'util2.ins.pas';
 {
 ********************************************************************************
@@ -28,6 +30,29 @@ begin
 
   sys_error_none (stat);               {indicate no error}
   util_mem_context_err := false;
+  end;
+{
+********************************************************************************
+*
+*   Procedure UTIL_MEM_CONTEXT_ERR_BOMB (MEM_P)
+*
+*   Bomb the program with a suitable error message if a new memory context was
+*   not created.  MEM_P is the pointer to the new memory context.  NIL indicates
+*   that the new context was not created, and causes this routine to bomb the
+*   program.
+}
+procedure util_mem_context_err_bomb (  {bomb program on not got mem context}
+  in      mem_p: util_mem_context_p_t); {pointer returned by CONTEXT_GET}
+  val_param;
+
+var
+  stat: sys_err_t;
+
+begin
+  if mem_p <> nil then return;         {got the memory context, no error ?}
+
+  discard( util_mem_context_err (mem_p, stat) ); {set STAT to indicate error}
+  sys_error_abort (stat, '', '', nil, 0); {show error message, bomb program}
   end;
 {
 ********************************************************************************
@@ -58,4 +83,28 @@ begin
 
   sys_error_none (stat);               {indicate no error}
   util_mem_grab_err := false;
+  end;
+{
+********************************************************************************
+*
+*   Subroutine UTIL_MEM_GRAB_ERR_BOMB (DYN_P, SIZE)
+*
+*   Bomb the program with a suitable error message if new dynamic memory was not
+*   allocated.  DYN_P is the pointer to the new dynamic memory.  NIL indicates
+*   that the new memory was not allocated, and causes this routine to bomb the
+*   program.  SIZE is the amount of memory that was attempted to be allocated.
+}
+procedure util_mem_grab_err_bomb (     {bomb program on not got dynamic memory}
+  in      dyn_p: univ_ptr;             {pointer to new mem from alloc routine}
+  in      size: sys_int_adr_t);        {size of mem attempted to allocate}
+  val_param;
+
+var
+  stat: sys_err_t;
+
+begin
+  if dyn_p <> nil then return;         {got the memory, no error ?}
+
+  discard( util_mem_grab_err (dyn_p, size, stat) ); {set STAT to indicate error}
+  sys_error_abort (stat, '', '', nil, 0); {show error message, bomb program}
   end;
